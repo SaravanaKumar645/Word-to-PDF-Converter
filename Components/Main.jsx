@@ -48,9 +48,9 @@ const Main = () => {
     // console.log(file.type);
   };
   const handleUpload = (event) => {
-    setShowProgress(true);
+    setShowProgress((value) => !value);
     event.preventDefault();
-    event.target.disabled = true;
+    //event.target.disabled = true;
   };
   if (selectedFiles.length > 0) {
     selectedFiles.map((file) =>
@@ -66,28 +66,30 @@ const Main = () => {
   // }, 5000);
   return (
     <main className={styles.main}>
-      <h1>Word to PDF Converter !</h1>
-      <button
-        className={styles.stopTilt}
-        onClick={() => setTiltEnabled((value) => !value)}
-      >
-        {tiltEnabled ? "Disable Tilt Effect" : "Enable Tilt Effect"}
-      </button>
+      <div className={styles.header}>
+        <h1>Word to PDF Converter !</h1>
+        <button
+          className={styles.stopTilt}
+          onClick={() => setTiltEnabled((value) => !value)}
+        >
+          {tiltEnabled ? "Disable Tilt Effect" : "Enable Tilt Effect"}
+        </button>
+      </div>
       <div className={styles.circleDiv}></div>
       <Tilt
         className={styles.tiltDiv}
         tiltEnable={tiltEnabled}
         glareEnable={tiltEnabled}
-        tiltMaxAngleX="30"
-        tiltMaxAngleY="30"
+        tiltMaxAngleX="40"
+        tiltMaxAngleY="40"
         glarePosition={tiltEnabled ? "all" : ""}
         scale="1"
-        perspective="1000"
+        perspective={4000}
         glareBorderRadius={tiltEnabled ? "15px" : ""}
         glareMaxOpacity={tiltEnabled ? "0.5" : ""}
         glareColor={tiltEnabled ? "#c9c9c9" : ""}
         gyroscope={tiltEnabled}
-        transitionSpeed={tiltEnabled ? "1000" : ""}
+        transitionSpeed={tiltEnabled ? "1300" : ""}
       >
         <div className={styles.form}>
           <input
