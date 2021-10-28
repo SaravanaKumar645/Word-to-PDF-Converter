@@ -1,0 +1,200 @@
+.main {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #22114be7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+.main::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(dodgerblue, white);
+  clip-path: circle(15% at right 70%);
+}
+.main::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(yellow, white);
+  clip-path: circle(15% at left 30%);
+}
+.stopTilt {
+  position: absolute;
+  right: 2%;
+  top: 5%;
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  font-size: 12pt;
+  padding: 17px;
+  text-align: center;
+  border-radius: 8px;
+  width: 200px;
+  border: none;
+}
+.stopTilt:hover {
+  opacity: 0.9;
+  cursor: pointer;
+  box-shadow: 10px 10px 15px #1d1d1fd5;
+}
+.circleDiv::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(247, 152, 44, 0.966), white);
+  clip-path: circle(9% at 60% 27%);
+}
+
+.circleDiv::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(green, white);
+  clip-path: circle(7% at 30% 60%);
+}
+.tiltDiv {
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+}
+
+.form {
+  height: max-content;
+  min-height: 400px;
+  padding: 40px;
+  width: 600px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  flex-direction: column;
+  flex-wrap: wrap;
+  position: relative;
+  color: white;
+  box-shadow: 5px 5px 10px rgba(153, 207, 243, 0.493);
+  background: rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  border-top: 4px solid rgba(255, 255, 255, 0.5);
+  border-left: 4px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+}
+.form:hover {
+  box-shadow: 10px 10px 15px rgba(153, 207, 243, 0.493);
+}
+.selectBtn {
+  border-radius: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.918);
+  background-color: rgba(255, 255, 255, 0.685);
+  color: black;
+  padding: 10px;
+  width: 350px;
+  font-size: 12pt;
+  font-weight: bold;
+}
+.selectBtn:hover {
+  cursor: pointer;
+  background-color: white;
+  box-shadow: 5px 5px 5px #22114b;
+}
+.dropIcon {
+  width: 100px;
+  height: 60px;
+  background-color: #22114b9f;
+  border-radius: 9px;
+  color: white;
+  padding: 7px;
+  margin-bottom: 20px;
+}
+.dropIcon:hover {
+  border: 4px solid #22114b9f;
+  color: #22114b9f;
+  background-color: white;
+}
+.fileDisplay {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 3ch;
+  justify-content: center;
+  align-items: center;
+}
+.pgbarfileWrapper {
+  display: flex;
+  gap: 3ch;
+  align-items: center;
+}
+.singleFileDiv {
+  cursor: pointer;
+  box-shadow: 5px 5px 10px #22114bc0;
+  display: flex;
+  background-color: #22114b;
+  border-radius: 12px;
+  justify-content: space-between;
+  min-width: 400px;
+  min-height: 50px;
+}
+.fileinfo {
+  font-weight: bold;
+  font-size: 10pt;
+  color: white;
+  max-width: 300px;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 1ch;
+  align-items: center;
+  justify-content: center;
+  padding-left: 20px;
+}
+.fileSize {
+  background-color: white;
+  font-size: 9pt;
+  color: black;
+  align-self: center;
+  position: relative;
+  right: 3%;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 80px;
+  width: 100%;
+  justify-content: center;
+  padding: 3px 5px 3px 5px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+.uploadBtn {
+  background-color: white;
+  box-shadow: 5px 5px 10px #2d2c30c0;
+  font-weight: bold;
+  color: black;
+  font-size: 12pt;
+  border: none;
+  border-radius: 11px;
+  margin-top: 17px;
+  margin-bottom: 50px;
+  min-width: 240px;
+  padding: 10px;
+}
+.uploadBtn:hover {
+  cursor: pointer;
+  opacity: 0.9;
+  border: 2px solid rgba(0, 0, 0, 0.774);
+}
+.uploadBtn:disabled {
+  cursor: not-allowed;
+}
