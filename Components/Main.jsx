@@ -13,6 +13,7 @@ const Main = () => {
     hiddenFileInput.current.click();
   };
   const handleChange = (event) => {
+    setShowProgress(false);
     var files = [...event.target.files];
     files = files.filter((file) => file.name.includes([".doc" || ".docx"]));
 
@@ -47,9 +48,9 @@ const Main = () => {
     // console.log(file.type);
   };
   const handleUpload = (event) => {
+    setShowProgress(true);
     event.preventDefault();
     event.target.disabled = true;
-    setShowProgress(true);
   };
   if (selectedFiles.length > 0) {
     selectedFiles.map((file) =>
@@ -65,6 +66,7 @@ const Main = () => {
   // }, 5000);
   return (
     <main className={styles.main}>
+      <h1>Word to PDF Converter !</h1>
       <button
         className={styles.stopTilt}
         onClick={() => setTiltEnabled((value) => !value)}
@@ -97,18 +99,18 @@ const Main = () => {
             onChange={handleChange}
           ></input>
           <button onClick={handleSelectFiles} className={styles.selectBtn}>
-            <pre>
+            <p>
               <AiFillDropboxSquare className={styles.dropIcon} />
               <br />
               Drop your files here !
-            </pre>
+            </p>
           </button>
           {selectedFiles.length > 0 && (
             <div className={styles.fileDisplay}>
               {selectedFiles.map((file, index) => {
                 return (
-                  <div className={styles.pgbarfileWrapper}>
-                    <div className={styles.singleFileDiv} key={index}>
+                  <div className={styles.pgbarfileWrapper} key={index}>
+                    <div className={styles.singleFileDiv}>
                       <p className={styles.fileinfo}>
                         {file.name} &nbsp;&nbsp;&nbsp;
                       </p>

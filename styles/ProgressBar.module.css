@@ -5,4 +5,5 @@
   background-color: #22114b;
   padding: 4px;
   border-radius: 10px;
+  transition: all 3s ease;
 }
