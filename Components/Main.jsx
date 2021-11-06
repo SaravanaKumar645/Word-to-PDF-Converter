@@ -1,17 +1,23 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "../styles/Main.module.css";
 import { AiFillDropboxSquare } from "react-icons/ai";
 import Tilt from "react-parallax-tilt";
 import ProgressBar from "./ProgressBar";
+import axios from "axios";
+import Notifications from "./Notifications";
+import { ToastContainer } from "react-toastify";
+
 const Main = () => {
   const hiddenFileInput = useRef();
-  const fileTypes = [".doc", ".docx"];
+  const [progress, setProgress] = useState(0);
   const [tiltEnabled, setTiltEnabled] = useState(true);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [showProgress, setShowProgress] = useState(false);
+
   const handleSelectFiles = (event) => {
     hiddenFileInput.current.click();
   };
+
   const handleChange = (event) => {
     setShowProgress(false);
     var files = [...event.target.files];
@@ -20,12 +26,10 @@ const Main = () => {
     if (files.length !== event.target.files.length) {
       event.target.value = null;
       setSelectedFiles([]);
-      alert("Select only .doc or .docx files !");
+      Notifications.notifyError("Select only .docx or .doc files !");
     } else {
       setSelectedFiles([...event.target.files]);
     }
-
-    let formData = new FormData();
 
     // for (var i = 0; i < event.target.files.length; i++) {
     //   console.log(event.target.files[i]);
@@ -50,13 +54,62 @@ const Main = () => {
   const handleUpload = (event) => {
     setShowProgress((value) => !value);
     event.preventDefault();
+    event.target.disabled = true;
+    var formData = new FormData();
+    selectedFiles.map((file) => {
+      formData.append("files", file);
+    });
+
+    axios({
+      url: "http://localhost:3123/upload-word-file",
+      method: "POST",
+      data: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      onUploadProgress: (progressEvent) => {
+        console.log(
+          "Whether progress can be detected ? " + progressEvent.lengthComputable
+        );
+        if (progressEvent.lengthComputable) {
+          const { loaded, total } = progressEvent;
+          var percentage = Math.floor((loaded * 100) / total);
+          console.log(
+            `Progress ${loaded / 1000}kb of ${total}\nPercentage: ${percentage}`
+          );
+          if (percentage === 100) {
+            selectedFiles.length > 1
+              ? Notifications.notifySuccess("Files Uploaded Successfully !")
+              : Notifications.notifySuccess("File Uploaded Successfully !");
+            Notifications.notifyLoading();
+          }
+          setProgress(percentage);
+        } else {
+          setProgress(100);
+        }
+      },
+    })
+      .then((result) => {
+        setProgress(0);
+        setSelectedFiles([]);
+        if (result.status === 200) {
+          Notifications.notifyConversionSuccess("loading");
+          console.log(result);
+        } else {
+          Notifications.notifyConversionError("loading");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        Notifications.notifyConversionError("loading");
+      });
     //event.target.disabled = true;
   };
-  if (selectedFiles.length > 0) {
-    selectedFiles.map((file) =>
-      console.log(`${file.name}\n${file.type}\n${file.size / 1000}KB\n`)
-    );
-  }
+  // if (selectedFiles.length > 0) {
+  //   selectedFiles.map((file) =>
+  //     console.log(`${file.name}\n${file.type}\n${file.size / 1000}KB\n`)
+  //   );
+  // }
   // var demoProgress = setInterval(() => {
   //   if (progress < 100) {
   //     setProgress((progress) => progress + 1);
@@ -66,11 +119,14 @@ const Main = () => {
   // }, 5000);
   return (
     <main className={styles.main}>
+      <ToastContainer theme="colored" autoClose={5000} position="top-right" />
       <div className={styles.header}>
         <h1>Word to PDF Converter !</h1>
         <button
           className={styles.stopTilt}
-          onClick={() => setTiltEnabled((value) => !value)}
+          onClick={() => {
+            setTiltEnabled((value) => !value);
+          }}
         >
           {tiltEnabled ? "Disable Tilt Effect" : "Enable Tilt Effect"}
         </button>
@@ -114,12 +170,20 @@ const Main = () => {
                   <div className={styles.pgbarfileWrapper} key={index}>
                     <div className={styles.singleFileDiv}>
                       <p className={styles.fileinfo}>
-                        {file.name} &nbsp;&nbsp;&nbsp;
+                        {index + 1}&ensp;.&ensp;{file.name} &nbsp;&nbsp;&nbsp;
                       </p>
                       <p className={styles.fileSize}>{file.size / 1000} KB</p>
                     </div>
-
-                    {showProgress && <ProgressBar value={0} />}
+                    <ProgressBar
+                      value={progress}
+                      display={showProgress ? false : true}
+                    />
+                    {/* {showProgress && (
+                      <ProgressBar
+                        value={progress}
+                        display={showProgress ? "true" : "false"}
+                      />
+                    )} */}
                   </div>
                 );
               })}

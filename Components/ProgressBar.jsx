@@ -5,9 +5,11 @@ import styles from "../styles/ProgressBar.module.css";
 const ProgressBar = (props) => {
   const percentage = props.value;
   return (
-    <div className={styles.progressBarContainer}>
+    <div className={styles.progressBarContainer} hidden={props.display}>
       <CircularProgressbar
         value={percentage}
+        maxValue={100}
+        minValue={0}
         text={`${percentage}%`}
         strokeWidth={11}
         styles={buildStyles({
