@@ -61,7 +61,8 @@ const Main = () => {
     });
 
     axios({
-      url: "http://localhost:3123/upload-word-file",
+      // url: "http://localhost:3123/upload-word-file",
+      url: "https://trade-go.herokuapp.com/upload-word-file",
       method: "POST",
       data: formData,
       headers: {
