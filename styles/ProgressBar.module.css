@@ -5,4 +5,85 @@
   background-color: #22114b;
   padding: 4px;
   border-radius: 10px;
+  color: #c7b7da;
+}
+.linearProgress {
+  display: flex;
+  gap: 3ch;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(49, 48, 48);
+  padding: 20px 40px 20px 40px;
+  border-radius: 8px;
+  width: 500px;
+  background: rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+  border-top: 4px solid rgba(255, 255, 255, 0.5);
+  border-left: 4px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+}
+.successIcon {
+  color: #05b841;
+  background-color: white;
+  border-radius: 50px;
+  font-size: 20px;
+  font-weight: bold;
+}
+.loadingIcon {
+  animation: spin infinite 1s linear;
+  background: none;
+  border: none;
+  /* color: #ac98db; */
+  display: flex;
+  /* color: #b3a5d1; */
+  color: #22114b;
+  font-weight: bold;
+  align-items: center;
+  justify-content: center;
+}
+
+/* For Mobile Screens */
+@media screen and (max-width: 768px) {
+  .linearProgress {
+    display: flex;
+    gap: 1ch;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(49, 48, 48);
+    padding: 12px 0px 12px 15px;
+    border-radius: 8px;
+    width: 250px;
+    background: rgba(255, 255, 255, 0.3);
+    overflow: hidden;
+    border-top: 4px solid rgba(255, 255, 255, 0.5);
+    border-left: 4px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+  }
+  .successIcon {
+    color: #05b841;
+    background-color: white;
+    border-radius: 50px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .loadingIcon {
+    animation: spin infinite 1s linear;
+    background: none;
+    border: none;
+    /* color: #ac98db; */
+    display: flex;
+    /* color: #b3a5d1; */
+    color: #22114b;
+    font-weight: bold;
+    align-items: center;
+    justify-content: center;
+  }
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

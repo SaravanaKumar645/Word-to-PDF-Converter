@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "../styles/Main.module.css";
 import { AiFillDropboxSquare } from "react-icons/ai";
 import Tilt from "react-parallax-tilt";
-import ProgressBar from "./ProgressBar";
+import CircularProgressBar from "./CircularProgressBar";
 import axios from "axios";
+import LinearProgressBar from "./LinearProgressBar";
 import Notifications from "./Notifications";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 const Main = () => {
   const hiddenFileInput = useRef();
@@ -63,6 +64,7 @@ const Main = () => {
     axios({
       // url: "http://localhost:3123/upload-word-file",
       url: "https://trade-go.herokuapp.com/upload-word-file",
+      //url: "https://docs-to-pdf-converter.herokuapp.com/word-to-pdf",
       method: "POST",
       data: formData,
       headers: {
@@ -91,6 +93,7 @@ const Main = () => {
       },
     })
       .then((result) => {
+        toast.dismiss("success");
         setProgress(0);
         setSelectedFiles([]);
         if (result.status === 200) {
@@ -101,8 +104,14 @@ const Main = () => {
         }
       })
       .catch((err) => {
+        setSelectedFiles([]);
         console.log(err);
-        Notifications.notifyConversionError("loading");
+        toast.dismiss("success");
+        if (toast.isActive("loading")) {
+          Notifications.notifyConversionError("loading");
+        } else {
+          Notifications.notifyError("Something went wrong . Try Again !");
+        }
       });
     //event.target.disabled = true;
   };
@@ -175,19 +184,17 @@ const Main = () => {
                       </p>
                       <p className={styles.fileSize}>{file.size / 1000} KB</p>
                     </div>
-                    <ProgressBar
+                    {/* <CircularProgressBar
                       value={progress}
                       display={showProgress ? false : true}
-                    />
-                    {/* {showProgress && (
-                      <ProgressBar
-                        value={progress}
-                        display={showProgress ? "true" : "false"}
-                      />
-                    )} */}
+                    /> */}
                   </div>
                 );
               })}
+              <LinearProgressBar
+                value={progress}
+                hidden={showProgress ? true : true}
+              />
               <button
                 className={styles.uploadBtn}
                 onClick={handleUpload}

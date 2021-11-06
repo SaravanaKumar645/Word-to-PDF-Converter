@@ -4,11 +4,15 @@ import "react-toastify/dist/ReactToastify.css";
 const Notifications = {
   notifySuccess: (message) => {
     console.log(message);
-    toast.success(message);
+    toast.success(message, {
+      toastId: "success",
+    });
   },
   notifyError: (message) => {
     console.log(message);
-    toast.error(message);
+    toast.error(message, {
+      toastId: "error",
+    });
   },
   notifyLoading: () => {
     console.log("Conversion in progress ...");

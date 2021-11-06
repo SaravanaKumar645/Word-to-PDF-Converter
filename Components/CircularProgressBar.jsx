@@ -2,7 +2,7 @@ import React from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import styles from "../styles/ProgressBar.module.css";
-const ProgressBar = (props) => {
+const CircularProgressBar = (props) => {
   const percentage = props.value;
   return (
     <div className={styles.progressBarContainer} hidden={props.display}>
@@ -24,4 +24,4 @@ const ProgressBar = (props) => {
   );
 };
 
-export default ProgressBar;
+export default CircularProgressBar;
