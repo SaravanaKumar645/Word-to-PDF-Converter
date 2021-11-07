@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import styles from "../styles/Main.module.css";
 import { AiFillDropboxSquare } from "react-icons/ai";
 import Tilt from "react-parallax-tilt";
-import CircularProgressBar from "./CircularProgressBar";
 import axios from "axios";
 import LinearProgressBar from "./LinearProgressBar";
 import Notifications from "./Notifications";
@@ -31,45 +30,25 @@ const Main = () => {
     } else {
       setSelectedFiles([...event.target.files]);
     }
-
-    // for (var i = 0; i < event.target.files.length; i++) {
-    //   console.log(event.target.files[i]);
-    // }
-    // for (const key of Object.keys(selectedFiles)) {
-    //   formData.append("imagesArray", selectedFiles[key]);
-    // }
-    //console.log(formData);
-    //console.log(selectedFiles);
-
-    // for (var i = 0; i < event.target.files.length; i++) {
-    //   console.log(event.target.files[i].name);
-    //   console.log(event.target.files[i].size / 1000 + " KB");
-    //   console.log(event.target.files[i].type);
-    // }
-
     console.log(event.target.files);
-    // console.log(file.name);
-    // console.log(file.size / 1000 + " KB");
-    // console.log(file.type);
   };
+
   const handleUpload = (event) => {
     setShowProgress((value) => !value);
     event.preventDefault();
     event.target.disabled = true;
     var formData = new FormData();
     selectedFiles.map((file) => {
-      formData.append("files", file);
+      formData.append("file", file);
     });
 
     axios({
       // url: "http://localhost:3123/upload-word-file",
-      url: "https://trade-go.herokuapp.com/upload-word-file",
-      //url: "https://docs-to-pdf-converter.herokuapp.com/word-to-pdf",
+      //url: "https://trade-go.herokuapp.com/upload-word-file",
+      url: "https://docs-to-pdf-converter.herokuapp.com/word-to-pdf",
       method: "POST",
+      responseType: "blob",
       data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
       onUploadProgress: (progressEvent) => {
         console.log(
           "Whether progress can be detected ? " + progressEvent.lengthComputable
@@ -99,6 +78,14 @@ const Main = () => {
         if (result.status === 200) {
           Notifications.notifyConversionSuccess("loading");
           console.log(result);
+
+          const url = window.URL.createObjectURL(new Blob([result.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "file.zip");
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
         } else {
           Notifications.notifyConversionError("loading");
         }
