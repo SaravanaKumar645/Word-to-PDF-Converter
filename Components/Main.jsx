@@ -191,10 +191,12 @@ const Main = () => {
                   </div>
                 );
               })}
-              <LinearProgressBar
-                value={progress}
-                hidden={showProgress ? true : true}
-              />
+              {showProgress && (
+                <LinearProgressBar
+                  value={progress}
+                  hidden={showProgress ? true : false}
+                />
+              )}
               <button
                 className={styles.uploadBtn}
                 onClick={handleUpload}

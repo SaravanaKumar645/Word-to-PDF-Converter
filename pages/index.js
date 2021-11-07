@@ -1,6 +1,11 @@
 import Main from "../Components/Main";
 import Head from "next/head";
+import { useMediaQuery } from "react-responsive";
 export default function Home() {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: "(min-width: 770px)",
+  });
+  console.log(isDesktopOrLaptop);
   return (
     <>
       <Head>
