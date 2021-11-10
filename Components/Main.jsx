@@ -6,14 +6,42 @@ import axios from "axios";
 import LinearProgressBar from "./LinearProgressBar";
 import Notifications from "./Notifications";
 import { toast, ToastContainer } from "react-toastify";
+import { Tooltip, tooltipClasses } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import Select from "react-select";
 
 const Main = () => {
+  const BootstrapTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} arrow classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+      color: theme.palette.common.black,
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.common.black,
+      fontSize: "10pt",
+      padding: "10px 25px 10px 25px",
+      textAlign: "center",
+    },
+  }));
+  const selectOptions = [
+    {
+      value: "normal-conversion",
+      label: "Word to PDF (Normal)",
+      url: "https://docs-to-pdf-converter.herokuapp.com/word-to-pdf",
+    },
+    {
+      value: "merged-conversion",
+      label: "Word to PDF (Single Merged File)",
+      url: "https://docs-to-pdf-converter.herokuapp.com/words-to-pdf-merged",
+    },
+  ];
   const hiddenFileInput = useRef();
   const [progress, setProgress] = useState(0);
   const [tiltEnabled, setTiltEnabled] = useState(true);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [showProgress, setShowProgress] = useState(false);
-
+  const [converterType, setConverterType] = useState(selectOptions[0]);
   const handleSelectFiles = (event) => {
     hiddenFileInput.current.click();
   };
@@ -45,7 +73,7 @@ const Main = () => {
     axios({
       // url: "http://localhost:3123/upload-word-file",
       //url: "https://trade-go.herokuapp.com/upload-word-file",
-      url: "https://docs-to-pdf-converter.herokuapp.com/word-to-pdf",
+      url: converterType.url,
       method: "POST",
       responseType: "blob",
       data: formData,
@@ -78,11 +106,13 @@ const Main = () => {
         if (result.status === 200) {
           Notifications.notifyConversionSuccess("loading");
           console.log(result);
-
+          console.log(result.data.type);
           const url = window.URL.createObjectURL(new Blob([result.data]));
           const link = document.createElement("a");
           link.href = url;
-          link.setAttribute("download", "file.zip");
+          result.data.type === "application/zip"
+            ? link.setAttribute("download", "ConvertedFile.zip")
+            : link.setAttribute("download", "ConvertedPDF.pdf");
           document.body.appendChild(link);
           link.click();
           link.remove();
@@ -102,31 +132,35 @@ const Main = () => {
       });
     //event.target.disabled = true;
   };
-  // if (selectedFiles.length > 0) {
-  //   selectedFiles.map((file) =>
-  //     console.log(`${file.name}\n${file.type}\n${file.size / 1000}KB\n`)
-  //   );
-  // }
-  // var demoProgress = setInterval(() => {
-  //   if (progress < 100) {
-  //     setProgress((progress) => progress + 1);
-  //   } else {
-  //     clearInterval(demoProgress);
-  //   }
-  // }, 5000);
   return (
     <main className={styles.main}>
       <ToastContainer theme="colored" autoClose={5000} position="top-right" />
       <div className={styles.header}>
-        <h1>Word to PDF Converter !</h1>
-        <button
-          className={styles.stopTilt}
-          onClick={() => {
-            setTiltEnabled((value) => !value);
-          }}
-        >
-          {tiltEnabled ? "Disable Tilt Effect" : "Enable Tilt Effect"}
-        </button>
+        <h1>{converterType.label} Converter !</h1>
+        <div className={styles.selectandbuttonWrapper}>
+          <form>
+            <Select
+              isClearable={false}
+              instanceId="wordtopdf@645"
+              isSearchable={true}
+              value={converterType}
+              onChange={(option) => setConverterType(option)}
+              className={styles.select}
+              options={selectOptions}
+              placeholder="Select Converter Type ..."
+            ></Select>
+          </form>
+          <BootstrapTooltip title="Toggle Tilt Effect">
+            <button
+              className={styles.stopTilt}
+              onClick={() => {
+                setTiltEnabled((value) => !value);
+              }}
+            >
+              {tiltEnabled ? "Disable Tilt Effect" : "Enable Tilt Effect"}
+            </button>
+          </BootstrapTooltip>
+        </div>
       </div>
       <div className={styles.circleDiv}></div>
       <Tilt

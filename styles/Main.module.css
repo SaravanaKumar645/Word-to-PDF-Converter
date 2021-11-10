@@ -12,17 +12,20 @@
   position: absolute;
   top: 0;
   height: 120px;
-  backdrop-filter: blur(10px);
   width: 100%;
+  display: flex;
   background-color: #17083a;
   border-bottom: 2px solid #22114b;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
   box-shadow: 9px 9px 9px #1c0b44;
   align-items: center;
-  justify-content: center;
+}
+.selectandbuttonWrapper {
   display: flex;
-  text-align: center;
+  align-items: center;
+  gap: 1ch;
+  justify-content: center;
 }
 .main h1 {
   justify-self: center;
@@ -51,6 +54,16 @@
   height: 100%;
   background: linear-gradient(yellow, white);
   clip-path: circle(12% at left 30%);
+}
+.header .select {
+  width: 250px;
+  position: relative;
+  right: 20%;
+  cursor: pointer;
+}
+.header .select:hover {
+  cursor: pointer;
+  box-shadow: 0 0 20px #eaeaf0d5;
 }
 .stopTilt {
   background-color: white;
@@ -233,13 +246,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     padding-bottom: 100px;
   }
   .header {
     position: absolute;
     top: 0;
-    height: 120px;
+    height: max-content;
+    padding-bottom: 20px;
     backdrop-filter: blur(10px);
     width: 100%;
     background-color: #17083a;
@@ -252,14 +265,33 @@
     display: flex;
     flex-direction: column;
     text-align: center;
+    gap: 1ch;
+  }
+
+  .header .select {
+    width: 300px;
+    position: relative;
+    font-weight: bold;
+    left: 1px;
+  }
+  .header .select:hover {
+    box-shadow: 0 0 20px #eaeaf0d5;
+  }
+  .selectandbuttonWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1ch;
+    justify-content: center;
   }
   .main h1 {
     justify-self: center;
     padding: 13px;
-    font-size: 21pt;
+    font-size: 13pt;
     width: 100%;
     text-align: center;
     color: white;
+    border-bottom: 2px solid white;
   }
   .main::before {
     content: "";
@@ -286,17 +318,20 @@
     background-color: white;
     color: black;
     font-weight: bold;
-    font-size: 12pt;
-    padding: 10px;
+    font-size: 11pt;
     text-align: center;
-    border-radius: 8px;
-    width: 200px;
+    border-radius: 5px;
+    width: 250px;
     border: none;
+    position: relative;
+    left: 16px;
   }
   .stopTilt:hover {
     opacity: 0.9;
     cursor: pointer;
-    box-shadow: 0 0 5px #828283d5;
+    color: black;
+    background-color: white;
+    box-shadow: 0 0 10px #eaeaf0d5;
   }
   .circleDiv::before {
     content: "";
@@ -306,7 +341,7 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(rgba(247, 152, 44, 0.966), white);
-    clip-path: circle(9% at 60% 32%);
+    clip-path: circle(9% at 60% 42%);
   }
 
   .circleDiv::after {
