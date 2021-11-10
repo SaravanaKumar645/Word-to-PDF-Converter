@@ -142,7 +142,7 @@ const Main = () => {
             <Select
               isClearable={false}
               instanceId="wordtopdf@645"
-              isSearchable={true}
+              isSearchable={false}
               value={converterType}
               onChange={(option) => setConverterType(option)}
               className={styles.select}
