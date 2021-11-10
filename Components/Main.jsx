@@ -107,15 +107,23 @@ const Main = () => {
           Notifications.notifyConversionSuccess("loading");
           console.log(result);
           console.log(result.data.type);
-          const url = window.URL.createObjectURL(new Blob([result.data]));
-          const link = document.createElement("a");
-          link.href = url;
-          result.data.type === "application/zip"
-            ? link.setAttribute("download", "ConvertedFile.zip")
-            : link.setAttribute("download", "ConvertedPDF.pdf");
-          document.body.appendChild(link);
-          link.click();
-          link.remove();
+          if (result.data.type === "application/zip") {
+            const url = window.URL.createObjectURL(new Blob([result.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "ConvertedFile.zip");
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+          } else {
+            const url = window.URL.createObjectURL(new Blob([result.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "ConvertedPDF.pdf");
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+          }
         } else {
           Notifications.notifyConversionError("loading");
         }
