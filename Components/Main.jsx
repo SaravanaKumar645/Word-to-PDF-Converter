@@ -11,19 +11,6 @@ import { styled } from "@mui/material/styles";
 import Select from "react-select";
 
 const Main = () => {
-  const BootstrapTooltip = styled(({ className, ...props }) => (
-    <Tooltip {...props} arrow classes={{ popper: className }} />
-  ))(({ theme }) => ({
-    [`& .${tooltipClasses.arrow}`]: {
-      color: theme.palette.common.black,
-    },
-    [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: theme.palette.common.black,
-      fontSize: "10pt",
-      padding: "10px 25px 10px 25px",
-      textAlign: "center",
-    },
-  }));
   const selectOptions = [
     {
       value: "normal-conversion",
@@ -38,10 +25,25 @@ const Main = () => {
   ];
   const hiddenFileInput = useRef();
   const [progress, setProgress] = useState(0);
-  const [tiltEnabled, setTiltEnabled] = useState(true);
+  const [tiltEnabled, setTiltEnabled] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [showProgress, setShowProgress] = useState(false);
   const [converterType, setConverterType] = useState(selectOptions[0]);
+
+  const BootstrapTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} arrow classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+      color: theme.palette.common.black,
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.common.black,
+      fontSize: "10pt",
+      padding: "10px 25px 10px 25px",
+      textAlign: "center",
+    },
+  }));
+
   const handleSelectFiles = (event) => {
     hiddenFileInput.current.click();
   };
@@ -84,9 +86,9 @@ const Main = () => {
         if (progressEvent.lengthComputable) {
           const { loaded, total } = progressEvent;
           var percentage = Math.floor((loaded * 100) / total);
-          console.log(
-            `Progress ${loaded / 1000}kb of ${total}\nPercentage: ${percentage}`
-          );
+          // console.log(
+          //   `Progress ${loaded / 1000}kb of ${total}\nPercentage: ${percentage}`
+          // );
           if (percentage === 100) {
             selectedFiles.length > 1
               ? Notifications.notifySuccess("Files Uploaded Successfully !")
@@ -105,8 +107,8 @@ const Main = () => {
         setSelectedFiles([]);
         if (result.status === 200) {
           Notifications.notifyConversionSuccess("loading");
-          console.log(result);
-          console.log(result.data.type);
+          // console.log(result);
+          // console.log(result.data.type);
           if (result.data.type === "application/zip") {
             const url = window.URL.createObjectURL(new Blob([result.data]));
             const link = document.createElement("a");
@@ -115,14 +117,16 @@ const Main = () => {
             document.body.appendChild(link);
             link.click();
             link.remove();
-          } else {
+          } else if (result.data.type === "application/pdf") {
             const url = window.URL.createObjectURL(new Blob([result.data]));
             const link = document.createElement("a");
+            link.style.display = "none";
             link.href = url;
             link.setAttribute("download", "ConvertedPDF.pdf");
             document.body.appendChild(link);
             link.click();
-            link.remove();
+            URL.revokeObjectURL(link.href); // release URL object
+            document.body.removeChild(link);
           }
         } else {
           Notifications.notifyConversionError("loading");
